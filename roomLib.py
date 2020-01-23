@@ -87,7 +87,8 @@ class Block(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((w,h))
 
-
+# Call this function to make the test room for enemy or player testing purposes
+# Also useful for bypassing lvl generation
 def drawTestRoom(displaySurface, colorList):
     for y in range(0, len(testRoom), 1):
         for x in range(0, len(testRoom[y]), 1):
