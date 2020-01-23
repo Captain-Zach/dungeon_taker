@@ -1,7 +1,7 @@
 import pygame
+
 import character
 import roomLib
-
 
 # Initialize pygame
 pygame.init()
@@ -37,8 +37,10 @@ def drawHandling():
     #RGB VALUES
     screen.fill((0,0,0))
     # pDraw()
+    floor_sprites.draw(screen)
     all_sprites.draw(screen)
-    roomLib.drawTestRoom(screen, wallColor)
+    wall_sprites.draw(screen)
+    
 
 
 def spawn_handling():
@@ -49,8 +51,17 @@ def spawn_handling():
         player.attack = False
 
 # sprite groups! <3 
+floor_sprites = pygame.sprite.Group()
+wall_sprites = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
+#get a list of sprites with built in location information
+dungeonTiles = roomLib.drawTestRoom()
+for tile in dungeonTiles:
+    if tile.tile_type == 1:
+        floor_sprites.add(tile)
+    if tile.tile_type == 0:
+        wall_sprites.add(tile)
 
 # Loading area for rooms
 # roomLib.procRoomX()

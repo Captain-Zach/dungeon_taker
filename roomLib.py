@@ -1,5 +1,7 @@
-import pygame
 import random
+
+import pygame
+
 import node
 
 wallChance = 50
@@ -82,20 +84,38 @@ secondXSuccess = [
 ]
 roomList = []
 
+WHITE = (255,255,255)
+GREY = (50,50,50)
+BLACK = (0,0,0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+
 class Block(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h):
+    def __init__(self, xPos, yPos, tile_type):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((w,h))
+        self.image = pygame.Surface((40,40))
+        if tile_type == 1:
+            self.image.fill(BLACK)
+            self.rect = self.image.get_rect()
+        if tile_type == 0:
+            self.image.fill(GREY)
+            self.rect = self.image.get_rect()
+        self.rect.topleft = ((xPos*40),(yPos*40))
+        self.tile_type = tile_type
+
 
 # Call this function to make the test room for enemy or player testing purposes
 # Also useful for bypassing lvl generation
-def drawTestRoom(displaySurface, colorList):
+def drawTestRoom():
+    dungeonSprites = []
     for y in range(0, len(testRoom), 1):
         for x in range(0, len(testRoom[y]), 1):
-            if testRoom[y][x] == 0:
-                pygame.draw.rect(displaySurface, colorList, (0 + (x * 40), 0 + (y * 40),40,40))
-
-    pass
+            # populate a list to be returned containing sprites for the sprite god.
+            dungeonSprites.append(Block(x,y,testRoom[y][x]))
+            # if testRoom[y][x] == 0:
+            #     pygame.draw.rect(displaySurface, colorList, (0 + (x * 40), 0 + (y * 40),40,40))
+    return dungeonSprites
 
 def drawTestRoomX(displaySurface, colorList):
     for y in range(0, len(roomList[0]), 1):
