@@ -40,7 +40,7 @@ def drawHandling():
     floor_sprites.draw(screen)
     all_sprites.draw(screen)
     wall_sprites.draw(screen)
-    
+    collision_sprites.draw(screen)
 
 
 def spawn_handling():
@@ -54,6 +54,7 @@ def spawn_handling():
 floor_sprites = pygame.sprite.Group()
 wall_sprites = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
+collision_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 #get a list of sprites with built in location information
 dungeonTiles = roomLib.drawTestRoom()
@@ -62,6 +63,10 @@ for tile in dungeonTiles:
         floor_sprites.add(tile)
     if tile.tile_type == 0:
         wall_sprites.add(tile)
+
+coll_boxes = player.coll_list
+for box in coll_boxes:
+    collision_sprites.add(box)
 
 # Loading area for rooms
 # roomLib.procRoomX()
@@ -79,6 +84,7 @@ while running:
     
     all_sprites.update()
     spawn_handling()
+    collision_sprites.update()
     running = player.game_running
     
     # Draw / render
