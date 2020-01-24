@@ -57,11 +57,14 @@ all_sprites = pygame.sprite.Group()
 collision_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 #get a list of sprites with built in location information
+
+roomLib.procRoomX()
 dungeonTiles = roomLib.drawTestRoom()
 for tile in dungeonTiles:
     if tile.tile_type == 1:
         floor_sprites.add(tile)
     if tile.tile_type == 0:
+
         wall_sprites.add(tile)
 
 coll_boxes = player.coll_list
@@ -69,7 +72,7 @@ for box in coll_boxes:
     collision_sprites.add(box)
 
 # Loading area for rooms
-# roomLib.procRoomX()
+
 
 # A state machine for managing the main game loop
 
@@ -87,6 +90,25 @@ while running:
     collision_sprites.update()
     running = player.game_running
     
+
+    hits = pygame.sprite.groupcollide(collision_sprites, wall_sprites, False, False)
+    if player.top_box in hits:
+        player.collide_up = True
+    else: 
+        player.collide_up = False
+    if player.bottom_box in hits:
+        player.collide_down = True
+    else:
+        player.collide_down = False
+    if player.left_box in hits:
+        player.collide_left = True
+    else:
+        player.collide_left = False
+    if player.right_box in hits:
+        player.collide_right = True
+    else:
+        player.collide_right = False
+
     # Draw / render
     drawHandling()
 

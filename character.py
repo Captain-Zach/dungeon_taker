@@ -21,6 +21,7 @@ class Collision_Box(pygame.sprite.Sprite):
         self.pos = pos
         self.rect.center = self.pos
         self.parent = parent
+        self.triggered = False
         
 
 
@@ -89,11 +90,18 @@ class Character(pygame.sprite.Sprite):
         self.leftTrigger = False
         self.attack = False
         
+
+        self.collide_up = False
+        self.collide_down = False
+        self.collide_left = False
+        self.collide_right = False
+
+
         ######## Set collision boxes
-        self.top_box = Collision_Box(self, (4, 2), shape = 'lat')
-        self.bottom_box = Collision_Box(self, (4, 22), shape = 'lat')
-        self.left_box = Collision_Box(self, (2,4), shape = 'vert')
-        self.right_box = Collision_Box(self, (22,4), shape = 'vert')
+        self.top_box = Collision_Box(self, (4, 0), shape = 'lat')
+        self.bottom_box = Collision_Box(self, (4, 24), shape = 'lat')
+        self.left_box = Collision_Box(self, (0,4), shape = 'vert')
+        self.right_box = Collision_Box(self, (24,4), shape = 'vert')
 
 
         # all directional colliders to be added to groups.
@@ -107,19 +115,19 @@ class Character(pygame.sprite.Sprite):
         pass
 
     def movement(self):
-        if self.upTrigger:
+        if self.upTrigger and not self.collide_up:
             self.direction = 'UP'
             self.yPos -= self.speed
 
-        if self.downTrigger:
+        if self.downTrigger and not self.collide_down:
             self.direction = 'DOWN'
             self.yPos += self.speed
 
-        if self.leftTrigger:
+        if self.leftTrigger and not self.collide_left:
             self.direction = 'LEFT'
             self.xPos -= self.speed
 
-        if self.rightTrigger:
+        if self.rightTrigger and not self.collide_right:
             self.direction = 'RIGHT'
             self.xPos += self.speed
         self.rect.center = (self.xPos, self.yPos)
