@@ -1,5 +1,5 @@
 import pygame
-
+import enemy
 import character
 import roomLib
 
@@ -57,7 +57,8 @@ all_sprites = pygame.sprite.Group()
 collision_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 #get a list of sprites with built in location information
-
+flyTest = enemy.Fly()
+all_sprites.add(flyTest)
 roomLib.procRoomX()
 dungeonTiles = roomLib.drawTestRoom()
 for tile in dungeonTiles:
