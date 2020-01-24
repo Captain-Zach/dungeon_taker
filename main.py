@@ -57,8 +57,8 @@ all_sprites = pygame.sprite.Group()
 collision_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 #get a list of sprites with built in location information
-flyTest = enemy.Fly()
-all_sprites.add(flyTest)
+# flyTest = enemy.Fly()
+# all_sprites.add(flyTest)
 roomLib.procRoomX()
 dungeonTiles = roomLib.drawTestRoom()
 for tile in dungeonTiles:
@@ -71,6 +71,11 @@ for tile in dungeonTiles:
 coll_boxes = player.coll_list
 for box in coll_boxes:
     collision_sprites.add(box)
+# colls = flyTest.coll_boxes
+# for box in colls:
+    # collision_sprites.add(box)
+
+# testing fly collision
 
 # Loading area for rooms
 
