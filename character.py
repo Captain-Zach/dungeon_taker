@@ -8,6 +8,33 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 
+class Collision_Box(pygame.sprite.Sprite):
+    def __init__(self, parent, pos, shape):
+        pygame.sprite.Sprite.__init__(self)
+        if shape == 'vert':
+            self.image = pygame.Surface((8, 24))
+        if shape == 'lat':
+            self.image = pygame.Surface((24, 8))
+        # Setting color for testing.
+        self.image.fill(BLUE)
+        self.rect = self.image.get_rect()
+        self.pos = pos
+        self.rect.center = self.pos
+        self.parent = parent
+        self.triggered = False
+        
+
+
+    def update(self):
+        self.rect.x = self.parent.rect.x + self.pos[0]
+        self.rect.y = self.parent.rect.y + self.pos[1]
+
+# class Collision_Group(pygame.sprite.Sprite):
+#     def __init__(self, parent, offset):
+
+
+
+
 class Player_Attack(pygame.sprite.Sprite):
     def __init__(self, direction, origin, offset = 5):
         pygame.sprite.Sprite.__init__(self)
@@ -50,8 +77,8 @@ class Character(pygame.sprite.Sprite):
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (xPos, yPos)
-        # self.xPos = xPos
-        # self.yPos = yPos
+        self.xPos = xPos
+        self.yPos = yPos
         self.speed = speed
         self.attack = attack
         self.health = health
@@ -63,6 +90,22 @@ class Character(pygame.sprite.Sprite):
         self.leftTrigger = False
         self.attack = False
         
+
+        self.collide_up = False
+        self.collide_down = False
+        self.collide_left = False
+        self.collide_right = False
+
+
+        ######## Set collision boxes
+        self.top_box = Collision_Box(self, (4, 0), shape = 'lat')
+        self.bottom_box = Collision_Box(self, (4, 24), shape = 'lat')
+        self.left_box = Collision_Box(self, (0,4), shape = 'vert')
+        self.right_box = Collision_Box(self, (24,4), shape = 'vert')
+
+
+        # all directional colliders to be added to groups.
+        self.coll_list = [self.top_box, self.bottom_box, self.left_box, self.right_box]
         # This is the trigger to end the game
         self.game_running = True
 
@@ -72,21 +115,22 @@ class Character(pygame.sprite.Sprite):
         pass
 
     def movement(self):
-        if self.upTrigger:
+        if self.upTrigger and not self.collide_up:
             self.direction = 'UP'
-            self.rect.y -= self.speed
+            self.yPos -= self.speed
 
-        if self.downTrigger:
+        if self.downTrigger and not self.collide_down:
             self.direction = 'DOWN'
-            self.rect.y += self.speed
+            self.yPos += self.speed
 
-        if self.leftTrigger:
+        if self.leftTrigger and not self.collide_left:
             self.direction = 'LEFT'
-            self.rect.x -= self.speed
+            self.xPos -= self.speed
 
-        if self.rightTrigger:
+        if self.rightTrigger and not self.collide_right:
             self.direction = 'RIGHT'
-            self.rect.x += self.speed
+            self.xPos += self.speed
+        self.rect.center = (self.xPos, self.yPos)
 
     def inputHandler(self):
         for event in pygame.event.get():
@@ -118,4 +162,4 @@ class Character(pygame.sprite.Sprite):
                 self.game_running = False
             else: self.game_running = True
         
-        
+    
