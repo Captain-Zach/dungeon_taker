@@ -42,11 +42,20 @@ class Fly(pygame.sprite.Sprite):
         self.go_left = False
         self.go_up = False
 
-        self.top_box = Collision_Box(self, (1,0), 'lat')
+        self.top_box = Collision_Box(self, (1,-2), 'lat')
+        self.bottom_box = Collision_Box(self, (1,7), 'lat')
+        self.left_box = Collision_Box(self, (-2,1), 'vert')
+        self.right_box = Collision_Box(self, (6,1), 'vert')
 
 
-        self.coll_boxes = [self.top_box]
+        self.coll_boxes = [self.top_box, self.bottom_box, self.left_box, self.right_box]
 
 
     def update(self):
+        if self.go_left == True:
+            self.rect.x -= self.speed
+        else: self.rect.x += self.speed
+        if self.go_up == True:
+            self.rect.y -= self.speed
+        else: self.rect.y += self.speed
         pass

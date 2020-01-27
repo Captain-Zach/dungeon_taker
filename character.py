@@ -44,26 +44,42 @@ class Player_Attack(pygame.sprite.Sprite):
             self.image = pygame.Surface((8,32))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
+        self.direction = direction
+        self.origin = origin
+        self.offset = offset
+
 
         self.lifetime_frames = 7
 
-        if direction == 'UP':
-            target = (origin.rect.midtop[0], origin.rect.midtop[1] - offset)
+        if self.direction == 'UP':
+            target = (origin.rect.midtop[0], origin.rect.midtop[1] - self.offset)
             self.rect.center = target
-        if direction == 'DOWN':
-            target = (origin.rect.midbottom[0], origin.rect.midbottom[1] + offset)
+        if self.direction == 'DOWN':
+            target = (origin.rect.midbottom[0], origin.rect.midbottom[1] + self.offset)
             self.rect.center = target
-        if direction == 'LEFT':
-            target = (origin.rect.midleft[0] - offset, origin.rect.midleft[1] )
+        if self.direction == 'LEFT':
+            target = (origin.rect.midleft[0] - self.offset, origin.rect.midleft[1] )
             self.rect.center = target
-        if direction == 'RIGHT':
-            target = (origin.rect.midright[0] + offset, origin.rect.midright[1])
+        if self.direction == 'RIGHT':
+            target = (origin.rect.midright[0] + self.offset, origin.rect.midright[1])
             self.rect.center = target
-            # self.rect.center[0] += offset
+            # self.rect.center[0] += self.offset
 
         self.game_running = True
 
     def update(self):
+        if self.direction == 'UP':
+            target = (self.origin.rect.midtop[0], self.origin.rect.midtop[1] - self.offset)
+            self.rect.center = target
+        if self.direction == 'DOWN':
+            target = (self.origin.rect.midbottom[0], self.origin.rect.midbottom[1] + self.offset)
+            self.rect.center = target
+        if self.direction == 'LEFT':
+            target = (self.origin.rect.midleft[0] - self.offset, self.origin.rect.midleft[1] )
+            self.rect.center = target
+        if self.direction == 'RIGHT':
+            target = (self.origin.rect.midright[0] + self.offset, self.origin.rect.midright[1])
+            self.rect.center = target
         self.lifetime_frames -= 1
         if self.lifetime_frames < 1:
             self.kill()
@@ -71,7 +87,7 @@ class Player_Attack(pygame.sprite.Sprite):
         # self.rect.center = 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, xPos = 370, yPos = 480, speed = 3, attack = 1, health = 10):
+    def __init__(self, xPos = 370, yPos = 480, speed = 5, attack = 1, health = 10):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((32,32))
         self.image.fill(GREEN)
@@ -82,7 +98,10 @@ class Character(pygame.sprite.Sprite):
         self.speed = speed
         self.attack = attack
         self.health = health
-        
+
+        # Used for positions in the dungeon
+        self.dungeon_pos = "0302"
+
         self.direction = 'UP'
         self.upTrigger = False
         self.downTrigger = False
@@ -90,7 +109,7 @@ class Character(pygame.sprite.Sprite):
         self.leftTrigger = False
         self.attack = False
         
-
+        # Used for collision and movement
         self.collide_up = False
         self.collide_down = False
         self.collide_left = False
@@ -146,7 +165,7 @@ class Character(pygame.sprite.Sprite):
                 # Now handling attack input
                 if event.key == pygame.K_SPACE:
                     self.attack = True
-                    print("Attack key pressed")
+                    # print("Attack key pressed")
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     self.leftTrigger = False

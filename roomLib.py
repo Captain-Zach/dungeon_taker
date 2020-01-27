@@ -104,6 +104,30 @@ class Block(pygame.sprite.Sprite):
         self.rect.topleft = ((xPos*40),(yPos*40))
         self.tile_type = tile_type
 
+class Room:
+    #for use with 
+    def __init__(self):
+        self.north = False
+        self.south = False
+        self.east = False
+        self.west = False
+
+        self.n_room = None
+        self.s_room = None
+        self.e_room = None
+        self.w_room = None
+
+        self.room = procRoomY(self.north, self.south, self.east, self.south)
+
+
+
+
+
+
+
+
+
+
 
 # Call this function to make the test room for enemy or player testing purposes
 # Also useful for bypassing lvl generation
@@ -137,6 +161,7 @@ def generateRoom():
                 newRoom[y][x] = 0
     
     roomList.append(newRoom)
+    return(newRoom)
 
 def drawRandRoom(displaySurface, colorList):
     #roomList[TARGETROOM] will be passed through a parameter
@@ -232,6 +257,19 @@ def procRoomX():
     print(roomList[0])
     return
 
+def procRoomY(north, south, east, west):
+    generateRoom()
+    blankFill()
+    path = searchTest(roomList[0])
+    while path != True:
+        blankFill()
+        gateClear()
+        reductor()
+        path = searchTest(roomList[0])
+    print("DONE")
+    print(roomList[0])
+    return(roomList[0])
+
 def blankFill():
     for y in range(1, len(roomList[0]) - 1, 1):
         for x in range(1, len(roomList[0][y]) - 1, 1):
@@ -245,7 +283,22 @@ def blankFill():
                         print("No path, leaving empty")
                 else:
                     print("found path, leaving clear")
-    pass
+
+
+def blankFillX():
+    for y in range(1, len(roomList[0]) - 1, 1):
+        for x in range(1, len(roomList[0][y]) - 1, 1):
+            if roomList[0][y][x] == 1:
+                if searchTest(roomList[0], targX = x, targY=y) != True:
+                    if random.randint(0,100) < 40:
+                        print("filling in")
+                        roomList[0][y][x] = 0
+                    else:
+                        print("start point", y,x)
+                        print("No path, leaving empty")
+                else:
+                    print("found path, leaving clear")
+    
 
 def gateClear():
     print("Clearing squares nearest the exits")

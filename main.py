@@ -41,24 +41,28 @@ def drawHandling():
     all_sprites.draw(screen)
     wall_sprites.draw(screen)
     collision_sprites.draw(screen)
+    attack_sprites.draw(screen)
 
 
-def spawn_handling():
-    if player.attack == True:
-        print("spawn thing now")
-        attack = character.Player_Attack(player.direction, player, 10)
-        all_sprites.add(attack)
-        player.attack = False
+# def spawn_handling():
+#     if player.attack == True:
+#         print("spawn thing now")
+#         attack = character.Player_Attack(player.direction, player, 10)
+#         all_sprites.add(attack)
+#         player.attack = False
+#         return(attack)
 
 # sprite groups! <3 
 floor_sprites = pygame.sprite.Group()
 wall_sprites = pygame.sprite.Group()
+attack_sprites = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 collision_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 #get a list of sprites with built in location information
-# flyTest = enemy.Fly()
-# all_sprites.add(flyTest)
+flyTest = enemy.Fly()
+flyList = [flyTest]
+all_sprites.add(flyTest)
 roomLib.procRoomX()
 dungeonTiles = roomLib.drawTestRoom()
 for tile in dungeonTiles:
@@ -71,9 +75,9 @@ for tile in dungeonTiles:
 coll_boxes = player.coll_list
 for box in coll_boxes:
     collision_sprites.add(box)
-# colls = flyTest.coll_boxes
-# for box in colls:
-    # collision_sprites.add(box)
+colls = flyTest.coll_boxes
+for box in colls:
+    collision_sprites.add(box)
 
 # testing fly collision
 
@@ -92,7 +96,14 @@ while running:
     #Update
     
     all_sprites.update()
-    spawn_handling()
+    # attack = spawn_handling()
+    if player.attack == True:
+        print("spawn thing now")
+        attack = character.Player_Attack(player.direction, player, 10)
+        attack_sprites.add(attack)
+        # all_sprites.add(attack)
+        player.attack = False
+    attack_sprites.update()
     collision_sprites.update()
     running = player.game_running
     
@@ -115,6 +126,22 @@ while running:
     else:
         player.collide_right = False
 
+    # and now, for the fly object
+    if flyTest.top_box in hits:
+        flyTest.go_up = False
+    if flyTest.bottom_box in hits:
+        flyTest.go_up = True
+    if flyTest.left_box in hits:
+        flyTest.go_left = False
+    if flyTest.right_box in hits:
+        flyTest.go_left = True
+
+
+    hits = pygame.sprite.groupcollide(attack_sprites,wall_sprites, False, False)
+    if flyTest in hits:
+        print("YEEEEETT")
+    # if hits:
+    #     print("the fly is hit!")
     # Draw / render
     drawHandling()
 
