@@ -67,7 +67,7 @@ def main():
     enemy_sprites.add(flyTest)
     flyList = [flyTest]
     all_sprites.add(flyTest)
-    roomLib.procRoomX()
+    # roomLib.procRoomX()
     dungeonTiles = roomLib.drawTestRoom()
     for tile in dungeonTiles:
         if tile.tile_type == 1:
@@ -144,7 +144,7 @@ def main():
 
         ticks = pygame.sprite.groupcollide(enemy_sprites, attack_sprites, True, False)
         if flyTest in ticks:
-            
+
             print("YEEEEETT")
         if player in ticks:
             print("scored a hit")

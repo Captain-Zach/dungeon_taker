@@ -28,7 +28,7 @@ class Dungeon:
         pass
 
 class Door(pygame.sprite.Sprite):
-    def __init__(self, go_to="0201", pos=(0,9)):
+    def __init__(self, go_to="0201", pos=(0,9), direction = 'north'):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((40,32))
         self.image.fill(YELLOW)
@@ -36,7 +36,14 @@ class Door(pygame.sprite.Sprite):
         self.posX = (pos[1] * 40) 
         self.posY = (pos[0] * 40) + 9
         self.go_to = go_to
+        self.direction = direction
 
         # positioning.
         self.rect.x = self.posX
         self.rect.y = self.posY
+
+
+    def change_rooms(self, player):
+        if self.direction == 'north':
+            player.xPos = 9 * 40
+            player.yPos = 13 * 40

@@ -163,7 +163,17 @@ while running:
     trav = pygame.sprite.groupcollide(door_sprites, all_sprites, False, False)
     if door in trav:
         print("I'm a door!")
-        # door.change_rooms(player)
+        door.change_rooms(player)
+        wall_sprites.empty()
+        floor_sprites.empty()
+        dungeonTiles = roomLib.drawTestRoom()
+        for tile in dungeonTiles:
+            if tile.tile_type == 1:
+                floor_sprites.add(tile)
+            if tile.tile_type == 0:
+
+                wall_sprites.add(tile)
+
     # Draw / render
     drawHandling()
 

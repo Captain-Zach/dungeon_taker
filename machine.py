@@ -4,6 +4,7 @@ import character
 import enemy
 import roomLib
 import test2
+import intro
 
 # Initialize pygame
 pygame.init()
@@ -32,8 +33,11 @@ running = True
 
 while running:
     if state == "INTRO":
-        state = test2.main()
+        state = intro.main()
         print(state)
     if state == "MAIN":
         state = test2.main()
         print(state)
+    if state == "END":
+        print("Nope")
+        quit()
