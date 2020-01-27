@@ -144,6 +144,7 @@ def main():
 
         ticks = pygame.sprite.groupcollide(enemy_sprites, attack_sprites, True, False)
         if flyTest in ticks:
+            
             print("YEEEEETT")
         if player in ticks:
             print("scored a hit")

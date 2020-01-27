@@ -26,10 +26,14 @@ icon = pygame.image.load('images/oubliette.png')
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 
+# STATE
 state = "INTRO"
 running = True
 
 while running:
     if state == "INTRO":
+        state = test2.main()
+        print(state)
+    if state == "MAIN":
         state = test2.main()
         print(state)
