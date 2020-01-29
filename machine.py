@@ -4,7 +4,9 @@ import character
 import enemy
 import roomLib
 import test2
-import intro
+import game_intro
+import start_page
+import credit_Page
 
 # Initialize pygame
 pygame.init()
@@ -33,8 +35,10 @@ running = True
 
 while running:
     if state == "INTRO":
-        state = intro.main()
+        state = game_intro.intro_pg()
         print(state)
+    if state == "START_SCREEN":
+        state = start_page.button_intro()
     if state == "MAIN":
         state = test2.main()
         print(state)

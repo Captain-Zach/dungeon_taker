@@ -102,4 +102,4 @@ def main():
         # always flip last.  This is for double buffering.
         pygame.display.flip()
 
-    return ("MAIN")
+    return ("START_SCREEN")
