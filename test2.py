@@ -155,4 +155,4 @@ def main():
 
         pygame.display.flip()
     
-    return ("INTRO")
+    return ("END")

@@ -141,6 +141,16 @@ def drawTestRoom():
             #     pygame.draw.rect(displaySurface, colorList, (0 + (x * 40), 0 + (y * 40),40,40))
     return dungeonSprites
 
+def drawTargetRoom(target_room):
+    dungeonSprites = []
+    for y in range(0, len(target_room), 1):
+        for x in range(0, len(target_room[y]), 1):
+            # populate a list to be returned containing sprites for the sprite god.
+            dungeonSprites.append(Block(x,y,target_room[y][x]))
+            # if testRoom[y][x] == 0:
+            #     pygame.draw.rect(displaySurface, colorList, (0 + (x * 40), 0 + (y * 40),40,40))
+    return dungeonSprites
+
 def drawTestRoomX(displaySurface, colorList):
     for y in range(0, len(roomList[0]), 1):
         for x in range(0, len(roomList[0][y]), 1):
@@ -151,7 +161,23 @@ def drawTestRoomX(displaySurface, colorList):
     pass
 
 def generateRoom():
-    newRoom = testRoom
+    newRoom = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+]
     for y in range(1, len(newRoom) - 1, 1):
         
         for x in range(1, len(newRoom[y]) - 1, 1):
@@ -159,8 +185,6 @@ def generateRoom():
                 #this is the first print to fire off!
                 print("x", x)
                 newRoom[y][x] = 0
-    
-    roomList.append(newRoom)
     return(newRoom)
 
 def drawRandRoom(displaySurface, colorList):
@@ -182,6 +206,18 @@ def reductor():
             if roomList[0][y][x] == 0:
                 if random.randint(0, 100) < reducer:
                     roomList[0][y][x] = 1
+    pass
+    
+
+    
+def reductorX(target_room):
+    #roomList[TARGETROOM] will be passed through a parameter
+
+    for y in range(1, len(target_room) - 1, 1):
+        for x in range(1, len(target_room[y]) - 1, 1):
+            if target_room[y][x] == 0:
+                if random.randint(0, 100) < reducer:
+                    target_room[y][x] = 1
     pass
     
 def searchTest(room, startX = 9, startY = 13, targX = 9, targY = 1): #will eventually accept arguments for 
@@ -222,7 +258,7 @@ def searchTest(room, startX = 9, startY = 13, targX = 9, targY = 1): #will event
                 queue.printSLL()
         #if value is found in SLL, pathfinding was a success
         if queue.valCheck(target):
-            print("AHHHH!")
+            # print("AHHHH!")
             return(True)
         #otherwise, we have to add the node to the burn list so we dont accidentally 
         #queue it again.
@@ -232,7 +268,7 @@ def searchTest(room, startX = 9, startY = 13, targX = 9, targY = 1): #will event
         queue = queue.removeDupes()
         queue.printSLL()
         if queue.head.nxt == None:
-            print("YOU FAILEDDDD")
+            # print("YOU FAILEDDDD")
             return False
     #return False
 
@@ -255,20 +291,26 @@ def procRoomX():
         path = searchTest(roomList[0])
     print("DONE")
     print(roomList[0])
-    return
-
-def procRoomY(north, south, east, west):
-    generateRoom()
-    blankFill()
-    path = searchTest(roomList[0])
-    while path != True:
-        blankFill()
-        gateClear()
-        reductor()
-        path = searchTest(roomList[0])
-    print("DONE")
-    print(roomList[0])
     return(roomList[0])
+
+def procRoomY():
+    newRoom = generateRoom()
+    blankFillX(newRoom)
+    path = searchTest(newRoom)
+    while path != True:
+        blankFillX(newRoom)
+        gateClearX(newRoom)
+        reductorX(newRoom)
+        path = searchTest(newRoom)
+    # line cut
+    gateClearX(newRoom)
+    for x in range(1, len(newRoom[6])-1,1):
+        newRoom[6][x] = 1
+        
+
+    print("DONE")
+    print(newRoom)
+    return(newRoom)
 
 def blankFill():
     for y in range(1, len(roomList[0]) - 1, 1):
@@ -276,32 +318,35 @@ def blankFill():
             if roomList[0][y][x] == 1:
                 if searchTest(roomList[0], targX = x, targY=y) != True:
                     if random.randint(0,100) < 40:
-                        print("filling in")
+                        # print("filling in")
                         roomList[0][y][x] = 0
                     else:
-                        print("start point", y,x)
-                        print("No path, leaving empty")
+                        pass
+                        # print("start point", y,x)
+                        # print("No path, leaving empty")
                 else:
-                    print("found path, leaving clear")
+                    pass
+                    # print("found path, leaving clear")
 
-
-def blankFillX():
-    for y in range(1, len(roomList[0]) - 1, 1):
-        for x in range(1, len(roomList[0][y]) - 1, 1):
-            if roomList[0][y][x] == 1:
-                if searchTest(roomList[0], targX = x, targY=y) != True:
+def blankFillX(room_target):
+    for y in range(1, len(room_target) - 1, 1):
+        for x in range(1, len(room_target[y]) - 1, 1):
+            if room_target[y][x] == 1:
+                if searchTest(room_target, targX = x, targY=y) != True:
                     if random.randint(0,100) < 40:
-                        print("filling in")
-                        roomList[0][y][x] = 0
+                        # print("filling in")
+                        room_target[y][x] = 0
                     else:
-                        print("start point", y,x)
-                        print("No path, leaving empty")
+                        pass
+                        # print("start point", y,x)
+                        # print("No path, leaving empty")
                 else:
-                    print("found path, leaving clear")
-    
+                    pass
+                    # print("found path, leaving clear")
+
 
 def gateClear():
-    print("Clearing squares nearest the exits")
+    # print("Clearing squares nearest the exits")
     #access individual squares
     # North Gate
     roomList[0][1][9] = 1
@@ -317,7 +362,53 @@ def gateClear():
     roomList[0][12][8] = 1
     roomList[0][12][9] = 1
     roomList[0][12][10] = 1
+    # East Gate
+    roomList[0][6][1] = 1
+    roomList[0][7][1] = 1
+    roomList[0][5][1] = 1
+    roomList[0][6][2] = 1
+    roomList[0][7][2] = 1
+    roomList[0][5][2] = 1
+    # West Gate
+    roomList[0][6][17] = 1
+    roomList[0][7][17] = 1
+    roomList[0][5][17] = 1
+    roomList[0][6][18] = 1
+    roomList[0][7][18] = 1
+    roomList[0][5][18] = 1
+    pass
 
+def gateClearX(target_room):
+    # print("Clearing squares nearest the exits")
+    #access individual squares
+    # North Gate
+    target_room[1][9] = 1
+    target_room[1][8] = 1
+    target_room[1][10] = 1
+    target_room[2][8] = 1
+    target_room[2][9] = 1
+    target_room[2][10] = 1
+    # South Gate
+    target_room[13][8] = 1
+    target_room[13][9] = 1
+    target_room[13][10] = 1
+    target_room[12][8] = 1
+    target_room[12][9] = 1
+    target_room[12][10] = 1
+    # East Gate
+    target_room[6][1] = 1
+    target_room[7][1] = 1
+    target_room[5][1] = 1
+    target_room[6][2] = 1
+    target_room[7][2] = 1
+    target_room[5][2] = 1
+    # West Gate
+    target_room[6][17] = 1
+    target_room[7][17] = 1
+    target_room[5][17] = 1
+    target_room[6][18] = 1
+    target_room[7][18] = 1
+    target_room[5][18] = 1
     pass
 
 

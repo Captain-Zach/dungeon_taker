@@ -45,7 +45,7 @@ class Fly(pygame.sprite.Sprite):
         self.top_box = Collision_Box(self, (1,-2), 'lat')
         self.bottom_box = Collision_Box(self, (1,7), 'lat')
         self.left_box = Collision_Box(self, (-2,1), 'vert')
-        self.right_box = Collision_Box(self, (6,1), 'vert')
+        self.right_box = Collision_Box(self, (7,1), 'vert')
 
 
         self.coll_boxes = [self.top_box, self.bottom_box, self.left_box, self.right_box]
