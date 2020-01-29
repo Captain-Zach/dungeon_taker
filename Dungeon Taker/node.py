@@ -22,7 +22,7 @@ class SLL:
         if self.head == None:
             #print("nothing to take out!")
             return
-        print("executing drop")
+        # print("executing drop")
         self.head = self.head.nxt
 
     def append(self, node):
@@ -73,9 +73,9 @@ class SLL:
             return
         runner = self.head
         while runner.nxt != None:
-            print("Node Value is", runner.val)
+            # print("Node Value is", runner.val)
             runner = runner.nxt
-        print("Last node value is", runner.val)
+        # print("Last node value is", runner.val)
         pass
     
     def cleanNode(self, node):
