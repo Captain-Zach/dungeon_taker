@@ -94,41 +94,19 @@ BLUE = (0, 0, 255)
 class Block(pygame.sprite.Sprite):
     def __init__(self, xPos, yPos, tile_type):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((40,40))
+        # self.image = pygame.Surface((40,40))
         if tile_type == 1:
-            self.image.fill(BLACK)
+            self.image = pygame.image.load('images/floor_vines0.png')
             self.rect = self.image.get_rect()
         if tile_type == 0:
-            self.image.fill(GREY)
+            self.image = pygame.image.load('images/wall_vines0.png')
             self.rect = self.image.get_rect()
         self.rect.topleft = ((xPos*40),(yPos*40))
         self.tile_type = tile_type
 
-class Room:
-    #for use with 
-    def __init__(self):
-        self.north = False
-        self.south = False
-        self.east = False
-        self.west = False
 
-        self.n_room = None
-        self.s_room = None
-        self.e_room = None
-        self.w_room = None
-
-        self.room = procRoomY(self.north, self.south, self.east, self.south)
-
-
-
-
-
-
-
-
-
-
-
+# Call this function to make the test room for enemy or player testing purposes
+# Also useful for bypassing lvl generation
 # Call this function to make the test room for enemy or player testing purposes
 # Also useful for bypassing lvl generation
 def drawTestRoom():
@@ -266,6 +244,11 @@ def searchTest(room, startX = 9, startY = 13, targX = 9, targY = 1): #will event
         queue.dropFront()
         # NOTE
         queue = queue.removeDupes()
+        if queue == False:
+            print("hit the RL")
+            #This fixed it, but I have no clue why.
+
+            return None
         queue.printSLL()
         if queue.head.nxt == None:
             # print("YOU FAILEDDDD")
@@ -317,6 +300,7 @@ def blankFill():
         for x in range(1, len(roomList[0][y]) - 1, 1):
             if roomList[0][y][x] == 1:
                 if searchTest(roomList[0], targX = x, targY=y) != True:
+                    
                     if random.randint(0,100) < 40:
                         # print("filling in")
                         roomList[0][y][x] = 0
@@ -410,8 +394,6 @@ def gateClearX(target_room):
     target_room[7][18] = 1
     target_room[5][18] = 1
     pass
-
-
 ###############################TEST CODE###############################
 #searchTest(testRoom)
 

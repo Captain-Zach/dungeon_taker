@@ -35,8 +35,13 @@ dungeon_dict = {
 
 }
 class Dungeon:
-    def __init__(self, start_room="0301", map=test_dungeon):
-        self.start_room = start_room
+    def __init__(self, d_dict, map=test_dungeon,):
+        self.start_room = None
+        self.d_dict = d_dict
+        self.map = map
+        #self.map = dungeon_procedural_Gen()
+        #self.d_dict = make_dungeon()
+        #self.start_room = 
         
         pass
 
@@ -70,11 +75,11 @@ class Room:
 class Door(pygame.sprite.Sprite):
     def __init__(self, go_to="0201", pos=(0,9), direction = 'north'):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((40,46))
-        self.image.fill(YELLOW)
+        self.image = pygame.image.load('images/dngn_closed_door.png')
+        # self.image.fill(YELLOW)
         self.rect = self.image.get_rect()
         self.posX = (pos[1] * 40) 
-        self.posY = (pos[0] * 40) - 2
+        self.posY = (pos[0] * 40)
         self.go_to = go_to
         self.direction = direction
 

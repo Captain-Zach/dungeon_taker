@@ -3,6 +3,7 @@ import enemy
 import character
 import roomLib
 import dungeon
+import pickle
 
 # Initialize pygame
 pygame.init()
@@ -87,17 +88,42 @@ def build_coord(y, x):
 
 
 
-# building dungeon here
-def make_dungeon():
-    d_dict = {}
-    dungeon_map = dungeon.test_dungeon
-    # pass 1 creates the rooms
-    for y in range(1, len(dungeon_map)-1):
-        for x in range(1, len(dungeon_map[y])-1):
-            if dungeon_map[y][x] == 1:
-                d_dict[build_coord(y,x)] = dungeon.Room()
-                # print(d_dict[build_coord(y,x)].map)
-                pass
+# # building dungeon here
+# def make_dungeon(map = dungeon.test_dungeon):
+#     d_dict = {}
+#     dungeon_map = map
+#     # pass 1 creates the rooms
+#     for y in range(1, len(dungeon_map)-1):
+#         for x in range(1, len(dungeon_map[y])-1):
+#             if dungeon_map[y][x] == 1:
+#                 d_dict[build_coord(y,x)] = dungeon.Room()
+#                 # print(d_dict[build_coord(y,x)].map)
+#                 pass
+    # for y in range(1, len(dungeon_map)-1):
+    #     for x in range(1, len(dungeon_map[y])-1):
+    #         if dungeon_map[y][x] == 1:
+    #             # if room to the left
+    #             if dungeon_map[y][x-1] == 1:
+    #                 d_dict[build_coord(y,x)].east_door = dungeon.Door(direction='east', pos=(6,0), go_to=build_coord(y,x-1))
+    #             # if room above
+    #             if dungeon_map[y-1][x] == 1:
+    #                 d_dict[build_coord(y,x)].north_door = dungeon.Door(direction='north', go_to=build_coord(y-1,x))
+    #             # if room above
+    #             if dungeon_map[y][x+1] == 1:
+    #                 d_dict[build_coord(y,x)].west_door = dungeon.Door(direction='west',pos=(6,19), go_to=build_coord(y,x+1))
+    #             # if room above
+    #             if dungeon_map[y+1][x] == 1:
+    #                 d_dict[build_coord(y,x)].south_door = dungeon.Door(direction='south',pos=(14,9), go_to=build_coord(y+1,x))
+    #             d_dict[build_coord(y,x)].refresh()
+#     return d_dict
+# door_up = dungeon.Door()
+# room1 = dungeon.Room(north_door=door_up)
+# dungeon = rand_dungeon()
+# 
+# d_dict = make_dungeon()
+
+def define_doors(d_dict, work_dungeon):
+    dungeon_map = work_dungeon.map
     for y in range(1, len(dungeon_map)-1):
         for x in range(1, len(dungeon_map[y])-1):
             if dungeon_map[y][x] == 1:
@@ -115,11 +141,18 @@ def make_dungeon():
                     d_dict[build_coord(y,x)].south_door = dungeon.Door(direction='south',pos=(14,9), go_to=build_coord(y+1,x))
                 d_dict[build_coord(y,x)].refresh()
     return d_dict
-# door_up = dungeon.Door()
-# room1 = dungeon.Room(north_door=door_up)
-
-d_dict = make_dungeon()
 current_location = '0501'
+
+
+#########################################################################
+# Testing pickle loading
+#########################################################################
+with open('dungeons/dungeon.pkl', 'rb') as pickle_file:
+    dungeon_list = pickle.load(pickle_file)
+target_dungeon = dungeon_list[0]
+d_dict = target_dungeon.d_dict
+d_dict = define_doors(d_dict, target_dungeon)
+
 # Reads the map of dungeon room, and adds wall and floor sprites.
 dungeonTiles = roomLib.drawTargetRoom(d_dict['0501'].map)
 for tile in dungeonTiles:

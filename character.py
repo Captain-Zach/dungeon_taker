@@ -101,7 +101,8 @@ class Character(pygame.sprite.Sprite):
 
         # Used for positions in the dungeon
         self.dungeon_pos = "0302"
-
+        # Used for direction manipulation
+        self.direction_lock = False
         self.direction = 'UP'
         self.upTrigger = False
         self.downTrigger = False
@@ -135,25 +136,31 @@ class Character(pygame.sprite.Sprite):
 
     def movement(self):
         if self.upTrigger and not self.collide_up:
-            self.direction = 'UP'
+            if self.direction_lock == False:
+                self.direction = 'UP'
             self.yPos -= self.speed
 
         if self.downTrigger and not self.collide_down:
-            self.direction = 'DOWN'
+            if self.direction_lock == False:
+                self.direction = 'DOWN'
             self.yPos += self.speed
 
         if self.leftTrigger and not self.collide_left:
-            self.direction = 'LEFT'
+            if self.direction_lock == False:
+                self.direction = 'LEFT'
             self.xPos -= self.speed
 
         if self.rightTrigger and not self.collide_right:
-            self.direction = 'RIGHT'
+            if self.direction_lock == False:
+                self.direction = 'RIGHT'
             self.xPos += self.speed
         self.rect.center = (self.xPos, self.yPos)
 
     def inputHandler(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LSHIFT:
+                    self.direction_lock = True
                 if event.key == pygame.K_LEFT:
                     self.leftTrigger = True
                 if event.key == pygame.K_RIGHT:
@@ -167,6 +174,8 @@ class Character(pygame.sprite.Sprite):
                     self.attack = True
                     # print("Attack key pressed")
             if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LSHIFT:
+                    self.direction_lock = False
                 if event.key == pygame.K_LEFT:
                     self.leftTrigger = False
                 if event.key == pygame.K_RIGHT:

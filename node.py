@@ -81,6 +81,7 @@ class SLL:
     def cleanNode(self, node):
         if node == None:
             print("Here's your problem!")
+            return False
         newNode = Node(node.val)
         newNode.nxt = None
         return (newNode)
@@ -88,6 +89,8 @@ class SLL:
     def removeDupes(self):
         cleanSLL = SLL()
         node = self.cleanNode(self.head)
+        if node == False:
+            return False
         cleanSLL.head = node
         runner = self.head
         while runner.nxt != None:
