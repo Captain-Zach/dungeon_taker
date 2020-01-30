@@ -35,6 +35,108 @@ class Collision_Box(pygame.sprite.Sprite):
 
 
 
+class Player_Bullet(pygame.sprite.Sprite):
+    def __init__(self, direction, origin, offset = 20):
+        pygame.sprite.Sprite.__init__(self)
+        if direction == 'LEFT' or direction == 'RIGHT':
+            self.image = pygame.Surface((32,8))
+        if direction == 'UP' or direction == 'DOWN':
+            self.image = pygame.Surface((8,32))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.direction = direction
+        self.origin = origin
+        self.offset = offset
+
+
+        self.lifetime_frames = 7
+
+        if self.direction == 'UP':
+            target = (origin.rect.midtop[0], origin.rect.midtop[1] - self.offset)
+            self.rect.center = target
+        if self.direction == 'DOWN':
+            target = (origin.rect.midbottom[0], origin.rect.midbottom[1] + self.offset)
+            self.rect.center = target
+        if self.direction == 'LEFT':
+            target = (origin.rect.midleft[0] - self.offset, origin.rect.midleft[1] )
+            self.rect.center = target
+        if self.direction == 'RIGHT':
+            target = (origin.rect.midright[0] + self.offset, origin.rect.midright[1])
+            self.rect.center = target
+            # self.rect.center[0] += self.offset
+
+        self.game_running = True
+    def update(self):
+        if self.direction == 'UP':
+            target = (self.origin.rect.midtop[0] + 3, self.origin.rect.midtop[1] - self.offset)
+            self.rect.center = target
+        if self.direction == 'DOWN':
+            target = (self.origin.rect.midbottom[0] - 3, self.origin.rect.midbottom[1] + self.offset)
+            self.rect.center = target
+        if self.direction == 'LEFT':
+            target = (self.origin.rect.midleft[0] - self.offset, self.origin.rect.midleft[1] )
+            self.rect.center = target
+        if self.direction == 'RIGHT':
+            target = (self.origin.rect.midright[0] + self.offset, self.origin.rect.midright[1])
+            self.rect.center = target
+        self.lifetime_frames -= 1
+        if self.lifetime_frames < 1:
+            self.kill()
+
+
+
+
+
+class Player_Spear(pygame.sprite.Sprite):
+    def __init__(self, direction, origin, offset = 100):
+        pygame.sprite.Sprite.__init__(self)
+        if direction == 'LEFT' or direction == 'RIGHT':
+            self.image = pygame.Surface((32,8))
+        if direction == 'UP' or direction == 'DOWN':
+            self.image = pygame.Surface((8,32))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        self.direction = direction
+        self.origin = origin
+        self.offset = offset
+
+
+        self.lifetime_frames = 7
+
+        if self.direction == 'UP':
+            target = (origin.rect.midtop[0], origin.rect.midtop[1] - self.offset)
+            self.rect.center = target
+        if self.direction == 'DOWN':
+            target = (origin.rect.midbottom[0], origin.rect.midbottom[1] + self.offset)
+            self.rect.center = target
+        if self.direction == 'LEFT':
+            target = (origin.rect.midleft[0] - self.offset, origin.rect.midleft[1] )
+            self.rect.center = target
+        if self.direction == 'RIGHT':
+            target = (origin.rect.midright[0] + self.offset, origin.rect.midright[1])
+            self.rect.center = target
+            # self.rect.center[0] += self.offset
+
+        self.game_running = True
+    def update(self):
+        if self.direction == 'UP':
+            target = (self.origin.rect.midtop[0] + 3, self.origin.rect.midtop[1] - self.offset)
+            self.rect.center = target
+        if self.direction == 'DOWN':
+            target = (self.origin.rect.midbottom[0] - 3, self.origin.rect.midbottom[1] + self.offset)
+            self.rect.center = target
+        if self.direction == 'LEFT':
+            target = (self.origin.rect.midleft[0] - self.offset, self.origin.rect.midleft[1] )
+            self.rect.center = target
+        if self.direction == 'RIGHT':
+            target = (self.origin.rect.midright[0] + self.offset, self.origin.rect.midright[1])
+            self.rect.center = target
+        self.lifetime_frames -= 1
+        if self.lifetime_frames < 1:
+            self.kill()
+
+
+
 class Player_Attack(pygame.sprite.Sprite):
     def __init__(self, direction, origin, offset = 5):
         pygame.sprite.Sprite.__init__(self)
@@ -98,6 +200,8 @@ class Character(pygame.sprite.Sprite):
         self.speed = speed
         self.attack = attack
         self.health = health
+
+        self.weapon = 1
 
         # Used for positions in the dungeon
         self.dungeon_pos = "0302"

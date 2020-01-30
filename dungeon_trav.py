@@ -190,10 +190,13 @@ while running:
     # attack = spawn_handling()
     if player.attack == True:
         print("spawn thing now")
-        attack = character.Player_Attack(player.direction, player, 10)
+
+        attack = character.Player_Spear(player.direction, player, 20)
         attack_sprites.add(attack)
         # all_sprites.add(attack)
         player.attack = False
+
+#################################################################
     attack_sprites.update()
     collision_sprites.update()
     door_sprites.update()
