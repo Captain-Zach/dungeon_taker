@@ -39,17 +39,17 @@ class Player_Bullet(pygame.sprite.Sprite):
     def __init__(self, direction, origin, offset = 20):
         pygame.sprite.Sprite.__init__(self)
         if direction == 'LEFT' or direction == 'RIGHT':
-            self.image = pygame.Surface((32,8))
+            self.image = pygame.Surface((16,8))
         if direction == 'UP' or direction == 'DOWN':
-            self.image = pygame.Surface((8,32))
+            self.image = pygame.Surface((8,16))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.direction = direction
         self.origin = origin
         self.offset = offset
+        self.speed = 20
 
-
-        self.lifetime_frames = 7
+        self.lifetime_frames = 30
 
         if self.direction == 'UP':
             target = (origin.rect.midtop[0], origin.rect.midtop[1] - self.offset)
@@ -68,17 +68,13 @@ class Player_Bullet(pygame.sprite.Sprite):
         self.game_running = True
     def update(self):
         if self.direction == 'UP':
-            target = (self.origin.rect.midtop[0] + 3, self.origin.rect.midtop[1] - self.offset)
-            self.rect.center = target
+            self.rect.y -= self.speed
         if self.direction == 'DOWN':
-            target = (self.origin.rect.midbottom[0] - 3, self.origin.rect.midbottom[1] + self.offset)
-            self.rect.center = target
+            self.rect.y += self.speed
         if self.direction == 'LEFT':
-            target = (self.origin.rect.midleft[0] - self.offset, self.origin.rect.midleft[1] )
-            self.rect.center = target
+            self.rect.x -= self.speed
         if self.direction == 'RIGHT':
-            target = (self.origin.rect.midright[0] + self.offset, self.origin.rect.midright[1])
-            self.rect.center = target
+            self.rect.x += self.speed
         self.lifetime_frames -= 1
         if self.lifetime_frames < 1:
             self.kill()
@@ -90,16 +86,14 @@ class Player_Bullet(pygame.sprite.Sprite):
 class Player_Spear(pygame.sprite.Sprite):
     def __init__(self, direction, origin, offset = 100):
         pygame.sprite.Sprite.__init__(self)
-        if direction == 'LEFT' or direction == 'RIGHT':
-            self.image = pygame.Surface((32,8))
-        if direction == 'UP' or direction == 'DOWN':
-            self.image = pygame.Surface((8,32))
+        self.image = pygame.Surface((16,64))
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.direction = direction
         self.origin = origin
         self.offset = offset
 
+        self.rot = 0
 
         self.lifetime_frames = 7
 
@@ -116,20 +110,90 @@ class Player_Spear(pygame.sprite.Sprite):
             target = (origin.rect.midright[0] + self.offset, origin.rect.midright[1])
             self.rect.center = target
             # self.rect.center[0] += self.offset
-
+        self.anim_counter = 0
         self.game_running = True
     def update(self):
         if self.direction == 'UP':
-            target = (self.origin.rect.midtop[0] + 3, self.origin.rect.midtop[1] - self.offset)
+            self.anim_counter += 1
+            if self.anim_counter == 1:
+                self.image = pygame.image.load('sprites/stab_01.png')
+            if self.anim_counter == 2:
+                self.image = pygame.image.load('sprites/stab_02.png')
+            if self.anim_counter == 3:
+                self.image = pygame.image.load('sprites/stab_03.png')
+            if self.anim_counter == 4:
+                self.image = pygame.image.load('sprites/stab_03.png')
+            if self.anim_counter == 5:
+                self.image = pygame.image.load('sprites/stab_03.png')
+            if self.anim_counter >= 6:
+                self.image = pygame.image.load('sprites/stab_04.png')
+            target = (self.origin.rect.midtop[0] + 3, self.origin.rect.midtop[1] - self.offset - 15)
             self.rect.center = target
         if self.direction == 'DOWN':
-            target = (self.origin.rect.midbottom[0] - 3, self.origin.rect.midbottom[1] + self.offset)
+            self.anim_counter += 1
+            if self.anim_counter == 1:
+                self.image = pygame.image.load('sprites/stab_01.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter == 2:
+                self.image = pygame.image.load('sprites/stab_02.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter == 3:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter == 4:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter == 5:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter >= 6:
+                self.image = pygame.image.load('sprites/stab_04.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            target = (self.origin.rect.midbottom[0] - 8, self.origin.rect.midbottom[1] + self.offset - 7)
             self.rect.center = target
         if self.direction == 'LEFT':
-            target = (self.origin.rect.midleft[0] - self.offset, self.origin.rect.midleft[1] )
+            self.anim_counter += 1
+            if self.anim_counter == 1:
+                self.image = pygame.image.load('sprites/stab_01.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter == 2:
+                self.image = pygame.image.load('sprites/stab_02.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter == 3:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter == 4:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter == 5:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter >= 6:
+                self.image = pygame.image.load('sprites/stab_04.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            target = (self.origin.rect.midleft[0] - self.offset -17, self.origin.rect.midleft[1] + 25)
             self.rect.center = target
         if self.direction == 'RIGHT':
-            target = (self.origin.rect.midright[0] + self.offset, self.origin.rect.midright[1])
+            self.anim_counter += 1
+            if self.anim_counter == 1:
+                self.image = pygame.image.load('sprites/stab_01.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter == 2:
+                self.image = pygame.image.load('sprites/stab_02.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter == 3:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter == 4:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter == 5:
+                self.image = pygame.image.load('sprites/stab_03.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter >= 6:
+                self.image = pygame.image.load('sprites/stab_04.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            target = (self.origin.rect.midright[0] + self.offset - 10, self.origin.rect.midright[1] + 30)
             self.rect.center = target
         self.lifetime_frames -= 1
         if self.lifetime_frames < 1:
@@ -140,11 +204,15 @@ class Player_Spear(pygame.sprite.Sprite):
 class Player_Attack(pygame.sprite.Sprite):
     def __init__(self, direction, origin, offset = 5):
         pygame.sprite.Sprite.__init__(self)
-        if direction == 'UP' or direction == 'DOWN':
-            self.image = pygame.Surface((32,8))
+        self.image = pygame.Surface((64,32))
+        self.image_orig = pygame.image.load('sprites/slash_01.png')
+        self.image = self.image_orig.copy()
+        self.rot = 0
+        if direction == 'DOWN':
+            pass
         if direction == 'LEFT' or direction == 'RIGHT':
-            self.image = pygame.Surface((8,32))
-        self.image.fill(RED)
+            self.image = pygame.image.load('sprites/sword_01.png')
+        # self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.direction = direction
         self.origin = origin
@@ -154,7 +222,7 @@ class Player_Attack(pygame.sprite.Sprite):
         self.lifetime_frames = 7
 
         if self.direction == 'UP':
-            target = (origin.rect.midtop[0], origin.rect.midtop[1] - self.offset)
+            target = (origin.rect.midbottom[0], origin.rect.midbottom[1] - self.offset)
             self.rect.center = target
         if self.direction == 'DOWN':
             target = (origin.rect.midbottom[0], origin.rect.midbottom[1] + self.offset)
@@ -168,19 +236,80 @@ class Player_Attack(pygame.sprite.Sprite):
             # self.rect.center[0] += self.offset
 
         self.game_running = True
-
+        # Setting delay
+        self.anim_delay = 0
+        self.anim_counter = 0
     def update(self):
         if self.direction == 'UP':
-            target = (self.origin.rect.midtop[0], self.origin.rect.midtop[1] - self.offset)
-            self.rect.center = target
+            self.anim_counter += 1
+            if self.anim_counter == 1:
+                self.image = pygame.image.load('sprites/slash_01.png')
+            if self.anim_counter == 2:
+                self.image = pygame.image.load('sprites/slash_02.png')
+            if self.anim_counter == 3:
+                self.image = pygame.image.load('sprites/slash_03.png')
+            if self.anim_counter == 4:
+                self.image = pygame.image.load('sprites/slash_04.png')
+            if self.anim_counter >= 5:
+                self.image = pygame.image.load('sprites/slash_05.png')
+            target = (self.origin.rect.midtop[0], self.origin.rect.midtop[1] - self.offset-8)
+            self.rect.midtop = target
         if self.direction == 'DOWN':
-            target = (self.origin.rect.midbottom[0], self.origin.rect.midbottom[1] + self.offset)
+            self.anim_counter += 1
+            if self.anim_counter == 1:
+                self.image = pygame.image.load('sprites/slash_01.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter == 2:
+                self.image = pygame.image.load('sprites/slash_02.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter == 3:
+                self.image = pygame.image.load('sprites/slash_03.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter == 4:
+                self.image = pygame.image.load('sprites/slash_04.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            if self.anim_counter >= 5:
+                self.image = pygame.image.load('sprites/slash_05.png')
+                self.image = pygame.transform.rotate(self.image, 180)
+            target = (self.origin.rect.midbottom[0] - 5, self.origin.rect.midbottom[1] + self.offset)
             self.rect.center = target
         if self.direction == 'LEFT':
-            target = (self.origin.rect.midleft[0] - self.offset, self.origin.rect.midleft[1] )
+            self.anim_counter += 1
+            if self.anim_counter == 1:
+                self.image = pygame.image.load('sprites/slash_01.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter == 2:
+                self.image = pygame.image.load('sprites/slash_02.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter == 3:
+                self.image = pygame.image.load('sprites/slash_03.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter == 4:
+                self.image = pygame.image.load('sprites/slash_04.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            if self.anim_counter >= 5:
+                self.image = pygame.image.load('sprites/slash_05.png')
+                self.image = pygame.transform.rotate(self.image, 90)
+            target = (self.origin.rect.topleft[0] - self.offset - 10, self.origin.rect.topleft[1] )
             self.rect.center = target
         if self.direction == 'RIGHT':
-            target = (self.origin.rect.midright[0] + self.offset, self.origin.rect.midright[1])
+            self.anim_counter += 1
+            if self.anim_counter == 1:
+                self.image = pygame.image.load('sprites/slash_01.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter == 2:
+                self.image = pygame.image.load('sprites/slash_02.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter == 3:
+                self.image = pygame.image.load('sprites/slash_03.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter == 4:
+                self.image = pygame.image.load('sprites/slash_04.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            if self.anim_counter >= 5:
+                self.image = pygame.image.load('sprites/slash_05.png')
+                self.image = pygame.transform.rotate(self.image, -90)
+            target = (self.origin.rect.center[0] + self.offset -7 , self.origin.rect.center[1] -15)
             self.rect.center = target
         self.lifetime_frames -= 1
         if self.lifetime_frames < 1:
@@ -191,8 +320,11 @@ class Player_Attack(pygame.sprite.Sprite):
 class Character(pygame.sprite.Sprite):
     def __init__(self, xPos = 370, yPos = 480, speed = 5, attack = 1, health = 10):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((32,32))
-        self.image.fill(GREEN)
+        # Let's get started
+        # self.image = pygame.Surface((32,32))
+        self.state = None
+        self.image = pygame.image.load('sprites/readyDown_01.png')
+        # self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (xPos, yPos)
         self.xPos = xPos
@@ -207,7 +339,7 @@ class Character(pygame.sprite.Sprite):
         self.dungeon_pos = "0302"
         # Used for direction manipulation
         self.direction_lock = False
-        self.direction = 'UP'
+        self.direction = 'DOWN'
         self.upTrigger = False
         self.downTrigger = False
         self.rightTrigger = False
@@ -236,7 +368,19 @@ class Character(pygame.sprite.Sprite):
     def update(self):
         self.movement()
         self.inputHandler()
+        self.animation()
         pass
+    
+    def animation(self):
+        if self.direction == 'UP':
+            self.image = pygame.image.load('sprites/readyUp_01.png')
+        if self.direction == 'DOWN':
+            self.image = pygame.image.load('sprites/readyDown_01.png')
+        if self.direction == 'LEFT':
+            self.image = pygame.image.load('sprites/readyLeft_01.png')
+        if self.direction == 'RIGHT':
+            self.image = pygame.image.load('sprites/readyRight_01.png')
+        
 
     def movement(self):
         if self.upTrigger and not self.collide_up:
@@ -263,7 +407,15 @@ class Character(pygame.sprite.Sprite):
     def inputHandler(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LSHIFT:
+                if event.key == pygame.K_e:
+                    if self.weapon > 2:
+                        self.weapon = 1
+                    else:
+                        self.weapon += 1
+                if event.key == pygame.K_ESCAPE:
+                    print("credits scene go")
+                    self.state = "CREDITS"
+                if event.key == pygame.K_TAB:
                     self.direction_lock = True
                 if event.key == pygame.K_LEFT:
                     self.leftTrigger = True
@@ -278,7 +430,7 @@ class Character(pygame.sprite.Sprite):
                     self.attack = True
                     # print("Attack key pressed")
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LSHIFT:
+                if event.key == pygame.K_TAB:
                     self.direction_lock = False
                 if event.key == pygame.K_LEFT:
                     self.leftTrigger = False
@@ -288,7 +440,7 @@ class Character(pygame.sprite.Sprite):
                     self.upTrigger = False
                 if event.key == pygame.K_DOWN:
                     self.downTrigger = False
-
+            
             if event.type == pygame.QUIT:
                 print("I clicked quit")
                 self.game_running = False

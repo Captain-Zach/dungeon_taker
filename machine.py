@@ -1,12 +1,14 @@
 import pygame
 
 import character
-import enemy
-import roomLib
-import test2
-import game_intro
-import start_page
 import credit_Page
+import enemy
+import game_intro
+import moo
+import roomLib
+import start_page
+import test2
+import dungeon_trav
 
 # Initialize pygame
 pygame.init()
@@ -23,7 +25,8 @@ FPS = 30
 
 
 #Creates window, and clock, sets Icon
-screen = pygame.display.set_mode((screenWidth, screenHeight ))
+# screen = pygame.display.set_mode((screenWidth, screenHeight ))
+screen = pygame.display.set_mode((screenWidth, screenHeight ), pygame.FULLSCREEN)
 pygame.display.set_caption("Dungeon Taker: OTA")
 icon = pygame.image.load('images/oubliette.png')
 pygame.display.set_icon(icon)
@@ -39,9 +42,13 @@ while running:
         print(state)
     if state == "START_SCREEN":
         state = start_page.button_intro()
+    if state == "VILLAGE":
+        state = moo.moo()
     if state == "MAIN":
-        state = test2.main()
+        state = dungeon_trav.main()
         print(state)
+    if state == "CREDITS":
+        state = credit_Page.credit_move()
     if state == "END":
         print("Nope")
         quit()

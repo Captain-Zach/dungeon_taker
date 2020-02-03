@@ -33,7 +33,7 @@ def text_objects(text, font):
     return textSurface, textSurface.get_rect()
 
 def text_object2(text, font):
-    textSurface = font.render(text, True, WHITE)
+    textSurface = font.render(text, True, RED)
     return textSurface, textSurface.get_rect()
 
 # Making a sprite group
@@ -44,22 +44,28 @@ def credit_move():
     game_folder = os.path.dirname(__file__)
     screen.fill(BLACK)
 
-    largetext = pygame.font.Font('freesansbold.ttf',50)
-    textsurf0,textrect0 = text_objects("Credits",largetext)
-    textrect0.center = (400,300)
+    largetext = pygame.font.Font('Halo3.ttf',60)
+    textsurf0,textrect0 = text_object2("THE END",largetext)
+    textrect0.center = (400,100)
 
     smalltext = pygame.font.Font('freesansbold.ttf',40)
-    textsurf1,textrect1 = text_objects("Zachary Jones",smalltext)
-    textrect1.center = (400,400)
-    textsurf2,textrect2 = text_objects("Cyril",smalltext)
-    textrect2.center = (400,450)
-    textsurf3,textrect3 = text_objects("Shayan Yazdi",smalltext)
-    textrect3.center = (400,500)
-    textsurf4,textrect4 = text_objects("Usha S Rao",smalltext)
-    textrect4.center = (400,550)
+    textsurf1,textrect1 = text_objects("Zach Jones - Project Lead",smalltext)
+    textrect1.center = (400,200)
+    textsurf2,textrect2 = text_objects("Tora Jones - Art/Animation",smalltext)
+    textrect2.center = (400,250)
+    textsurf3,textrect3 = text_objects("Usha S Rao - UI/Presentation",smalltext)
+    textrect3.center = (400,300)
+    textsurf4,textrect4 = text_objects("Cyril Patton - AI",smalltext)
+    textrect4.center = (400,350)
+    textsurf5,textrect5 = text_objects("Shayan Yazdi - SFX/Level Design",smalltext)
+    textrect5.center = (400,400)
 
 
 # Game loop
+    pygame.mixer.music.load('sounds/boss_fight.wav')
+    pygame.mixer.music.set_volume(0.4)
+    pygame.mixer.music.play(loops=-1)
+
     running = True
     while running:
 
@@ -69,6 +75,9 @@ def credit_move():
         clock.tick(FPS)
         # Process input (events)
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    quit()
             # Checking for quit
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -76,21 +85,32 @@ def credit_move():
 
         #Update
         # all_sprites.update()
-        textrect0.y -= 5
-        textrect1.y -= 5
-        textrect2.y -= 5
-        textrect3.y -= 5
-        textrect4.y -= 5
 
-
-
-
+        # textrect0.y -= 5
+        # if textrect0.y < 0:
+        #     textrect0.y = HEIGHT
+        # textrect1.y -= 5
+        # if textrect1.y < 0:
+        #     textrect1.y = HEIGHT
+        # textrect2.y -= 5
+        # if textrect2.y < 0:
+        #     textrect2.y = HEIGHT
+        # textrect3.y -= 5
+        # if textrect3.y < 0:
+        #     textrect3.y = HEIGHT
+        # textrect4.y -= 5
+        # if textrect4.y < 0:
+        #     textrect4.y = HEIGHT
+        # textrect5.y -= 5
+        # if textrect5.y < 0:
+        #     textrect5.y = HEIGHT
 
         screen.blit(textsurf0,textrect0)
         screen.blit(textsurf1,textrect1)
         screen.blit(textsurf2,textrect2)
         screen.blit(textsurf3,textrect3)
         screen.blit(textsurf4,textrect4)
+        screen.blit(textsurf5,textrect5)
 
         print(textrect1.y)
         pygame.display.update()

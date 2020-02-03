@@ -32,7 +32,7 @@ def intro_pg():
     intro_img = pygame.image.load('PixelGunHound.png')
 
 
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     pygame.display.set_caption("Dungeon Taker Intro")
     clock = pygame.time.Clock()
 
@@ -59,15 +59,6 @@ def intro_pg():
         display_logo_size = intro_img.get_size()
         screen.blit(intro_img, [WIDTH/2 - display_logo_size[0]/2, HEIGHT/2 - display_logo_size[1]/2])
 
-
-
-        #Update
-        # all_sprites.update()
-
-        # Draw / render
-        # screen.fill(BLACK)
-        # all_sprites.draw(screen)
-        # always flip last.  This is for double buffering.
         pygame.display.flip()
         seconds = (pygame.time.get_ticks()- start_ticks)/1000
         if seconds > 3:
